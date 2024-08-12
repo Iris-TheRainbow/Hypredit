@@ -1,5 +1,9 @@
-import os, glob
+import os
 import sys
+
+args = sys.argv
+args.pop(0)
+print(args)
 
 home = os.path.expanduser("~")
 confpath = home +"/.config/hypredit"
@@ -25,25 +29,29 @@ for file in files:
         confs.append(file)
 print(confs)
 
-for i in range(len(confs)):
-    string = "(" + str(i + 1) + "): " + confs[i]
-    confs[i] = (i + 1, confs[i])
-    print(string)
+if args == []:
+    for i in range(len(confs)):
+        string = "(" + str(i + 1) + "): " + confs[i]
+        confs[i] = (i + 1, confs[i])
+        print(string)
 
 while True:
-    file = input("Select a hypr conf file: ")
     target = ""
     brake = False
-    for conf in confs:
-        if int(conf[0]) == int(file):
-            target = conf[1]
-            break
-        elif conf[1] == file:
-            target = conf[1]
-            break
-        elif file == 0:
-            brake = True
-    if target == "": continue
+    if args != []: target = args[0]
+    if args == []:
+        file = input("Select a hypr conf file: ")
+        for conf in confs:
+            if int(conf[0]) == int(file):
+                target = conf[1]
+                break
+            elif conf[1] == file:
+                target = conf[1]
+                break
+            elif file == 0:
+                brake = True
+        if target == "": continue
+
 
     if brake:
         break
